@@ -26,7 +26,9 @@ let score;        // Where we keep track of score and winner
 
 function setup() {
 
-  createCanvas((displaySize*pixelSize), pixelSize);     // dynamically sets canvas size
+  // createCanvas((displaySize*pixelSize), pixelSize);     // dynamically sets canvas size
+
+  createCanvas(500, 500);     // dynamically sets canvas size
 
   display = new Display(displaySize, pixelSize);        //Initializing the display
 

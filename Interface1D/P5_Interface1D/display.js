@@ -9,7 +9,7 @@ class Display {
   
       this.displaySize = _displaySize;
       this.pixelSize = _pixelSize;
-      this.initColor = color(0, 0, 0);      // black color
+      this.initColor = color(50, 50, 50);      // black color
       this.displayBuffer = [];
 
       // Assign black to all pixels. Black = off
@@ -37,18 +37,24 @@ class Display {
     // Now write it to screen
     // This is the only function in the entire software that writes something directly to the screen. I recommend you keep it this way.
     show() {
+      const centerX = width / 2;  // Assuming 'width' is the width of your canvas
+      const centerY = height / 2; // Assuming 'height' is the height of your canvas
+      const radius = 200; // The radius of the circle you want to arrange your circles around
+      
       for (let i = 0; i < this.displaySize; i++) {
+        // Calculate the angle for this element
+        let angle = TWO_PI / this.displaySize * i;
+        
+        // Calculate the x and y position
+        let x = centerX + radius * cos(angle);
+        let y = centerY + radius * sin(angle);
+        
+        // Draw the circle
         //noStroke();
         fill(this.displayBuffer[i]);
-        // Calculate the center x-coordinate for the circle
-        let cx = i * this.pixelSize + this.pixelSize / 2;
-        // Calculate the center y-coordinate for the circle, assuming you want it vertically centered in the same space as the square was
-        let cy = this.pixelSize / 2;
-        // Use this.pixelSize as the diameter for the circle
-        circle(cx, cy, this.pixelSize);
+        circle(x, y, this.pixelSize);
       }
     }
-
 
     
     // Let's empty the display before we start adding things to it again
