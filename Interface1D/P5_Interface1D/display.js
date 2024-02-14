@@ -37,10 +37,15 @@ class Display {
     // Now write it to screen
     // This is the only function in the entire software that writes something directly to the screen. I recommend you keep it this way.
     show() {
-      for (let i =0; i< this.displaySize; i++) {
+      for (let i = 0; i < this.displaySize; i++) {
         //noStroke();
         fill(this.displayBuffer[i]);
-        rect(i*this.pixelSize,0,this.pixelSize,this.pixelSize);
+        // Calculate the center x-coordinate for the circle
+        let cx = i * this.pixelSize + this.pixelSize / 2;
+        // Calculate the center y-coordinate for the circle, assuming you want it vertically centered in the same space as the square was
+        let cy = this.pixelSize / 2;
+        // Use this.pixelSize as the diameter for the circle
+        circle(cx, cy, this.pixelSize);
       }
     }
 
