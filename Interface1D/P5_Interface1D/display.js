@@ -3,13 +3,15 @@
 // This is particularly helpful once you start outputting your game to an LED strip, of if you want to have two separate 'screens'
 
 
+
 class Display {
 
     constructor(_displaySize, _pixelSize) {
-  
+      let roundColors = [color(50,50,50),color(0,19,13),color(0,36,27)]
+
       this.displaySize = _displaySize;
       this.pixelSize = _pixelSize;
-      this.initColor = color(50, 50, 50);      // black color
+      this.initColor = roundColors[round-1];      // grey color
       this.displayBuffer = [];
 
       // Assign black to all pixels. Black = off
@@ -67,7 +69,7 @@ class Display {
       fill(255); // Set the text color to white
 
       text(`Round: ${round}`, 200, 200); // Position it on the top left
-      text(`Countdown: ${playerOne.score}`, 200, 230); // Position it on the top left
+      text(`Countdown: ${countdown}`, 200, 230); // Position it on the top left
       text(`Item Value List: ${itemValues}`, 200, 260); // Position it on the top left
       text(`Current Item Value: ${itemValues[round-1]}`, 200, 290); // Position it on the top left
 

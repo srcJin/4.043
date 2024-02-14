@@ -22,7 +22,9 @@ let collisionAnimation;   // Where we store and manage the collision animation
 
 let score;        // Where we keep track of score and winner
 
-let countdown = 3; // a 3s countdown to trigger auction, will reset after player movement
+let gameStarted; // a function to indicate whether the game started, will become 1 when keyPressed
+
+let countdown; // a 3s countdown to trigger auction, will reset after player movement
 
 // adding necessary variables
 let itemValues = [5,8,10]
@@ -47,7 +49,12 @@ function setup() {
 
   controller = new Controller();            // Initializing controller
 
-  score = {max:3, winner:color(0,0,0)};     // score stores max number of points, and color 
+  gameStarted = 0;
+
+
+  countdown = 5
+
+  score = {max:3000, winner:color(0,0,0)};     // score stores max number of points, and color 
 
 }
 
