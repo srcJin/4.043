@@ -42,8 +42,8 @@ class Display {
       const radius = 200; // The radius of the circle you want to arrange your circles around
       
       for (let i = 0; i < this.displaySize; i++) {
-        // Calculate the angle for this element
-        let angle = TWO_PI / this.displaySize * i;
+        // Calculate the angle for this element, rotate 90 degrees
+        let angle = TWO_PI / this.displaySize * i + PI / 2 + PI / displaySize ;
         
         // Calculate the x and y position
         let x = centerX + radius * cos(angle);
@@ -66,15 +66,15 @@ class Display {
       textSize(15); // Set the text size
       fill(255); // Set the text color to white
 
-      text(`Round: ${playerOne.score}`, 200, 200); // Position it on the top left
+      text(`Round: ${round}`, 200, 200); // Position it on the top left
       text(`Countdown: ${playerOne.score}`, 200, 230); // Position it on the top left
-      text(`Item Value List: ${playerOne.score}`, 200, 260); // Position it on the top left
-      text(`Current Item Value: ${playerTwo.score}`, 200, 290); // Position it on the top left
+      text(`Item Value List: ${itemValues}`, 200, 260); // Position it on the top left
+      text(`Current Item Value: ${itemValues[round-1]}`, 200, 290); // Position it on the top left
 
 
 
-      text(`Player 1 Bid: ${playerOne.score}`, 370, 30); // Position it on the top left
-      text(`Player 2 Bid: ${playerTwo.score}`, 370, 60); // Position it on the top left
+      text(`Player 1 Bid: ${playerOne.currentBid}`, 370, 30); // Position it on the top left
+      text(`Player 2 Bid: ${playerTwo.currentBid}`, 370, 60); // Position it on the top left
 
 
       // Display playerOne's score

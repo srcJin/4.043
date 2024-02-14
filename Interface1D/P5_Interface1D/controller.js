@@ -33,17 +33,17 @@ class Controller {
                 // display.setPixel(target.position, target.playerColor);
 
                 
-                // check if player has caught target
-                if (playerOne.position == target.position)  {
-                    playerOne.score++;              // increment score
-                    this.gameState = "COLLISION";   // go to COLLISION state
-                }
+                // // check if player has caught target
+                // if (playerOne.position == target.position)  {
+                //     playerOne.score++;              // increment score
+                //     this.gameState = "COLLISION";   // go to COLLISION state
+                // }
                 
-                // check if other player has caught target        
-                if (playerTwo.position == target.position)  {
-                    playerTwo.score++;              // increment their score
-                    this.gameState = "COLLISION";   // go to COLLISION state
-                }
+                // // check if other player has caught target        
+                // if (playerTwo.position == target.position)  {
+                //     playerTwo.score++;              // increment their score
+                //     this.gameState = "COLLISION";   // go to COLLISION state
+                // }
 
                 break;
 
@@ -84,6 +84,13 @@ class Controller {
 
             //     break;
 
+
+
+
+
+            case "NEXTROUND":       
+
+
             // Game is over. Show winner and clean everything up so we can start a new game.
             case "SCORE":       
             
@@ -92,7 +99,7 @@ class Controller {
                 playerTwo.score = 0;
 
                 // put the target somewhere else, so we don't restart the game with player and target in the same place
-                target.position = parseInt(random(1,displaySize));
+                // target.position = parseInt(random(1,displaySize));
 
                 //light up w/ winner color by populating all pixels in buffer with their color
                 display.setAllPixels(score.winner);                    

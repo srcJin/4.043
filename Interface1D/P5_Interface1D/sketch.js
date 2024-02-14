@@ -22,6 +22,11 @@ let collisionAnimation;   // Where we store and manage the collision animation
 
 let score;        // Where we keep track of score and winner
 
+let countdown = 3; // a 3s countdown to trigger auction, will reset after player movement
+
+// adding necessary variables
+let itemValues = [5,8,10]
+let round = 1
 
 
 function setup() {
@@ -33,10 +38,10 @@ function setup() {
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
   // Player (_color, _position, _displaySize)
-  playerOne = new Player(color(255,0,0), 0, displaySize);   // Initializing players
-  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize);
+  playerOne = new Player(color(255,0,0), 0, displaySize,"leftPlayer");   // Initializing players
+  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize,"rightPlayer");
 
-  target = new Player(color(255,255,0), parseInt(random(0,displaySize)), displaySize);    // Initializing target using the Player class 
+  target = new Player(color(255,255,0), itemValues[round-1], displaySize);    // Initializing target using the Player class 
 
   collisionAnimation = new Animation();     // Initializing animation
 
