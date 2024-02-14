@@ -32,8 +32,9 @@ function setup() {
 
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
-  playerOne = new Player(color(255,0,0), parseInt(random(0,displaySize)), displaySize);   // Initializing players
-  playerTwo = new Player(color(0,0,255), parseInt(random(0,displaySize)), displaySize);
+  // Player (_color, _position, _displaySize)
+  playerOne = new Player(color(255,0,0), 0, displaySize);   // Initializing players
+  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize);
 
   target = new Player(color(255,255,0), parseInt(random(0,displaySize)), displaySize);    // Initializing target using the Player class 
 
@@ -55,6 +56,7 @@ function draw() {
 
   // After we've updated our states, we show the current one 
   display.show();
+  
 
 
 }

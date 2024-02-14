@@ -10,6 +10,7 @@ class Player {
         this.position = _position;
         this.score = 0;
         this.displaySize = _displaySize;
+        this.currentBid = 0;
     }
 
 
@@ -29,3 +30,11 @@ class Player {
          
     } 
   }
+
+
+class Item {
+    constructor(_color, value) {
+        this.itemColor = _color;
+        this.value = 0;
+    }
+}

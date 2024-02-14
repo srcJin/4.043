@@ -54,9 +54,35 @@ class Display {
         fill(this.displayBuffer[i]);
         circle(x, y, this.pixelSize);
       }
+
+      // Call the method to display scores
+      this.showScores();
+
+
     }
 
-    
+    // Method to display players' scores
+    showScores() {
+      textSize(15); // Set the text size
+      fill(255); // Set the text color to white
+
+      text(`Round: ${playerOne.score}`, 200, 200); // Position it on the top left
+      text(`Countdown: ${playerOne.score}`, 200, 230); // Position it on the top left
+      text(`Item Value List: ${playerOne.score}`, 200, 260); // Position it on the top left
+      text(`Current Item Value: ${playerTwo.score}`, 200, 290); // Position it on the top left
+
+
+
+      text(`Player 1 Bid: ${playerOne.score}`, 370, 30); // Position it on the top left
+      text(`Player 2 Bid: ${playerTwo.score}`, 370, 60); // Position it on the top left
+
+
+      // Display playerOne's score
+      text(`Player 1 Score: ${playerOne.score}`, 10, 30); // Position it on the top left
+      // Display playerTwo's score
+      text(`Player 2 Score: ${playerTwo.score}`, 10, 60); // Position it slightly below the first score
+    }
+  
     // Let's empty the display before we start adding things to it again
     clear() {
 
