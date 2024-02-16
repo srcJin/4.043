@@ -7,7 +7,6 @@
 */ /////////////////////////////////////
 
 
-let displaySize = 50;   // how many pixels are visible in the game
 let pixelSize = 20;     // how big each 'pixel' looks on screen
 
 let playerOne;    // Adding 2 players to the game
@@ -27,7 +26,7 @@ let gameStarted; // a function to indicate whether the game started, will become
 let countdown; // a 3s countdown to trigger auction, will reset after player movement
 
 // adding necessary variables
-let itemValues = [5,8,10]
+let itemValues = [50,270,150]
 let round = 1
 
 
@@ -40,8 +39,8 @@ function setup() {
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
   // Player (_color, _position, _displaySize)
-  playerOne = new Player(color(255,0,0), 0, displaySize,"leftPlayer");   // Initializing players
-  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize,"rightPlayer");
+  playerOne = new Player(color(255,0,0), 0, displaySize,"leftPlayer",300);   // Initializing players
+  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize,"rightPlayer",300);
 
   target = new Player(color(255,255,0), itemValues[round-1], displaySize);    // Initializing target using the Player class 
 

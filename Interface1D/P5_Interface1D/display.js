@@ -74,10 +74,10 @@ class Display {
       text(`Current Item Value: ${itemValues[round-1]}`, 200, 290); // Position it on the top left
 
 
-
-      text(`Player 1 Bid: ${playerOne.currentBid}`, 370, 30); // Position it on the top left
-      text(`Player 2 Bid: ${playerTwo.currentBid}`, 370, 60); // Position it on the top left
-
+      text(`Player 1 Budget: ${playerOne.budget}`, 340, 30); // Position it on the top left
+      text(`Player 1 Bid: ${playerOne.currentBid}`, 340, 60); // Position it on the top left
+      text(`Player 2 Budget: ${playerTwo.budget}`, 340, 90); // Position it on the top left
+      text(`Player 2 Bid: ${playerTwo.currentBid}`, 340, 120); // Position it on the top left
 
       // Display playerOne's score
       text(`Player 1 Score: ${playerOne.score}`, 10, 30); // Position it on the top left
