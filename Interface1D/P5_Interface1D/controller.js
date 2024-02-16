@@ -20,70 +20,54 @@ class Controller {
         // This is where your game logic lives
         /////////////////////////////////////////////////////////////////
 
-        function initialize() {
 
-        }
 
         switch (this.gameState) {
 
 
             // This is the main game state, where the playing actually happens
             case "PLAY":
-
-                // clear screen at frame rate so we always start fresh      
+                // Clear screen at frame rate so we always start fresh      
                 display.clear();
-
-                // show all players in the right place, by adding them to display buffer
-                display.setPixel(playerOne.position, playerOne.playerColor);
-                display.setPixel(playerTwo.position, playerTwo.playerColor);
-
-                if (gameStarted == 1) {
+            
+                // Show all players in the right place, by adding them to display buffer
+                [playerOne, playerTwo].forEach(player => {
+                    display.setPixel(player.position, player.playerColor);
+                });
+            
+                if (gameStarted == 1 && frameCount % 60 == 0 && countdown > 0) {
                     // Update and display the countdown every second
-                    if (frameCount % 60 == 0 && countdown > 0) { // Checks if a second has passed
-                        countdown -= 1; // Decrements the countdown by 1 every second
-                    }
+                    countdown -= 1; // Decrements the countdown by 1 every second
                 }
-
-
+            
                 if (countdown == 0) {
-
                     if (round < 3) {
-
-                        // calculate budget and score
-                        playerOne.budget -= playerOne.currentBid
-                        playerTwo.budget -= playerTwo.currentBid
-                        playerOne.currentBid = 0; // Reset the bid for the new round.
-                        playerTwo.currentBid = 0; // Reset the bid for the new round.
-                        playerOne.currentBudget = playerOne.budget; // Set the currentBudget for the next round based on remaining budget.
-                        playerTwo.currentBudget = playerTwo.budget;
-
-                        // reset the game
-                        round += 1;  // back to play state
-                        // @todo reset countdown
-                        countdown = 5;
+                        // Calculate budget, score, and reset bids for both players
+                        [playerOne, playerTwo].forEach(player => {
+                            player.budget -= player.currentBid;
+                            player.currentBid = 0; // Reset the bid for the new round.
+                            player.currentBudget = player.budget; // Set the currentBudget for the next round based on remaining budget.
+                            player.position = player === playerOne ? 0 : displaySize - 1; // Reset positions
+                            player.updateScore(); // Update the score
+                        });
+            
+                        // Reset the game for the new round
+                        round += 1;
+                        countdown = 5; // Reset countdown
                         display.clear();
-                        // display.setAllPixels(roundColors[round-1]) // change the color for each rounds
-
-                        playerOne.position = 0
-                        playerTwo.position = displaySize - 1
-
-                        // console.log("playerOne.position",playerOne.position)
-                        // console.log("playerTwo.position",playerTwo.position)
-
-
-                        display.setPixel(playerOne.position, playerOne.playerColor);
-                        display.setPixel(playerTwo.position, playerTwo.playerColor);
-
-                        // update the score
-                        playerOne.updateScore();
-                        playerTwo.updateScore();
-
-                    }
-                    else {
-                        this.gameState = "SCORE"
+                        // Optionally change the color for each round
+                        // display.setAllPixels(roundColors[round-1]);
+            
+                        // Redraw players in their new positions
+                        [playerOne, playerTwo].forEach(player => {
+                            display.setPixel(player.position, player.playerColor);
+                        });
+            
+                    } else {
+                        this.gameState = "SCORE";
                     }
                 }
-
+            
                 break;
 
             // This state is used to play an animation, after a target has been caught by a player 
@@ -190,9 +174,30 @@ function keyPressed() {
 
     // When you press the letter R, the game resets back to the play state
     if (key == 'R' || key == 'r') {
+        // Reset game state
         controller.gameState = "PLAY";
-    }
+        countdown = 5; // Reset countdown to 5 seconds
+        round = 1; // Reset to the first round
+        gameStarted = 0; // Reset game started flag
 
+        // Reset players
+        [playerOne, playerTwo].forEach(player => {
+            player.score = 0; // Reset score
+            player.budget = budget; // Reset budget to initial value or whatever your game design is
+            player.currentBudget = budget; // Reset currentBudget to the full budget
+
+            player.currentBid = 0; // Reset current bid
+            player.position = player === playerOne ? 0 : displaySize - 1; // Reset positions
+            // Reset any other player properties as necessary
+        });
+
+
+        // Optionally clear the display and redraw initial game state
+        display.clear();
+        [playerOne, playerTwo].forEach(player => {
+            display.setPixel(player.position, player.playerColor);
+        });
+    }
     if (countdown < 5) {
         countdown = 5; // Reset countdown to 5 seconds
     }

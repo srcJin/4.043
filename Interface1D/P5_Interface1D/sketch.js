@@ -29,6 +29,7 @@ let countdown; // a 3s countdown to trigger auction, will reset after player mov
 let itemValues = [50,270,150]
 let round = 1
 
+let budget = 300
 
 function setup() {
 
@@ -39,8 +40,8 @@ function setup() {
   display = new Display(displaySize, pixelSize);        //Initializing the display
 
   // Player (_color, _position, _displaySize)
-  playerOne = new Player(color(255,0,0), 0, displaySize,"leftPlayer",300);   // Initializing players
-  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize,"rightPlayer",300);
+  playerOne = new Player(color(255,0,0), 0, displaySize,"leftPlayer",budget);   // Initializing players
+  playerTwo = new Player(color(0,0,255), displaySize-1, displaySize,"rightPlayer",budget);
 
   target = new Player(color(255,255,0), itemValues[round-1], displaySize);    // Initializing target using the Player class 
 
