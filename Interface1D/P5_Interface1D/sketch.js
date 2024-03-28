@@ -51,7 +51,6 @@ function setup() {
 
   gameStarted = 0;
 
-
   countdown = 5
 
   score = {max:3000, winner:color(0,0,0)};     // score stores max number of points, and color 
