@@ -25,12 +25,33 @@ class Display {
     setPixel(  _index,  _color) {
         this.displayBuffer[_index]  = _color;
     }
-  
+      
+    // Color a range of pixels in the buffer
+    setPixelRange(_from, _to, _color) {
+      // Ensure _from is less than or equal to _to to avoid infinite loops
+      if (_from > _to) {
+          // Optionally, you could throw an error or swap the values.
+          console.error("setPixelRange: _from must be less than or equal to _to.");
+          return;
+      }
+
+      // Iterate over the range from _from to _to, inclusive
+      for (let i = _from; i <= _to; i++) {
+          // Check if the index is within the bounds of the display buffer
+          if (i >= 0 && i < this.displayBuffer.length) {
+              this.displayBuffer[i] = _color;
+          } else {
+              console.warn(`setPixelRange: Index ${i} is out of bounds.`);
+              // Optionally, break the loop if the index goes out of bounds
+              // break;
+          }
+      }
+    }
 
     // Color all pixels in the buffer
     setAllPixels( _color) {
       
-      for(let i = 0; i < displaySize; i++) { 
+      for(let i = 0; i < this.displaySize; i++) { 
         display.setPixel(i, _color); 
       }
     }
@@ -58,7 +79,7 @@ class Display {
       }
 
       // Call the method to display scores
-      this.showScores();
+      // this.showScores();
 
 
     }

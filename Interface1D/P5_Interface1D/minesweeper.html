@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minesweeper</title>
+<style>
+  .board { display: grid; }
+  .cell { 
+    width: 30px; height: 30px; 
+    line-height: 30px; text-align: center; 
+    border: 1px solid #999; 
+    display: inline-block; 
+    font-family: monospace; 
+    cursor: pointer; 
+  }
+  .mine { background-color: red; }
+  .flagged { background-color: yellow; }
+  .revealed { background-color: #ddd; }
+</style>
+</head>
+<body>
+<div id="board" class="board"></div>
+<script>
+const boardSize = 10;
+const mineCount = 15;
+let board = [];
+
+function generateBoard() {
+    board = Array.from({ length: boardSize }, () => Array(boardSize).fill(0));
+    placeMines();
+    updateNumbers();
+    drawBoard();
+}
+
+function placeMines() {
+    let placedMines = 0;
+    while (placedMines < mineCount) {
+        const row = Math.floor(Math.random() * boardSize);
+        const col = Math.floor(Math.random() * boardSize);
+        if (board[row][col] !== 'M') {
+            board[row][col] = 'M';
+            placedMines++;
+        }
+    }
+}
+
+function updateNumbers() {
+    for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+            if (board[row][col] === 'M') continue;
+            let mines = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    const nr = row + dr, nc = col + dc;
+                    if (nr >= 0 && nr < boardSize && nc >= 0 && nc < boardSize && board[nr][nc] === 'M') {
+                        mines++;
+                    }
+                }
+            }
+            board[row][col] = mines;
+        }
+    }
+}
+
+function drawBoard() {
+    const boardElement = document.getElementById('board');
+    boardElement.innerHTML = '';
+    boardElement.style.gridTemplateColumns = `repeat(${boardSize}, 30px)`;
+    for (let row = 0; row < boardSize; row++) {
+        for (let col = 0; col < boardSize; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.addEventListener('click', () => revealCell(row, col));
+            cell.addEventListener('contextmenu', e => {
+                e.preventDefault();
+                flagCell(cell);
+            });
+            boardElement.appendChild(cell);
+        }
+    }
+}
+
+function revealCell(row, col) {
+    const cell = document.getElementsByClassName('cell')[row * boardSize + col];
+    if (cell.classList.contains('flagged')) return;
+    cell.classList.add('revealed');
+    if (board[row][col] === 'M') {
+        cell.classList.add('mine');
+        alert('Game Over');
+        generateBoard(); // Restart the game
+    } else {
+        cell.innerText = board[row][col] > 0 ? board[row][col] : '';
+    }
+}
+
+function flagCell(cell) {
+    if (cell.classList.contains('revealed')) return;
+    cell.classList.toggle('flagged');
+}
+
+generateBoard();
+</script>
+</body>
+</html>

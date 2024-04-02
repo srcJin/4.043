@@ -1,0 +1,1 @@
+gpt_config = { "cache_seed": seed_number, # change the cache_seed for different trials "temperature": 1.0, # Controls randomness of responses "config_list": config_list_gpt4, # Presumably a list of additional GPT- 3.5 configurations "timeout": 120, # Maximum time for the agent to respond } 

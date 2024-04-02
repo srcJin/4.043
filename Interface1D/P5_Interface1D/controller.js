@@ -2,13 +2,16 @@
 // This is where your state machines and game logic lives
 
 let displaySize = 50;   // how many pixels are visible in the game
+
+let budget_countdown = 5
+
 let pricing_countdown = 5
 
 class Controller {
 
     // This is the state we start with.
     constructor() {
-        this.gameState = "PRICING";
+        this.gameState = "WAITING";
 
     }
 
@@ -24,32 +27,76 @@ class Controller {
 
         switch (this.gameState) {
 
+            case "WAITING":
+                if (budgetStarted === 1) {
+                    this.gameState = "BUDGET";
+                    console.log("Transitioning to BUDGET STATE");
+
+                }
+                break;
+
+            case "BUDGET":
+                display.clear();
+
+                console.log("BUDGET STATE");
+
+                if (budget_countdown > 0) {
+                    // Show the current bid by lighting up pixels from 0 to endPixel
+                    if (frameCount % 60 < 30) { // This creates a blinking effect by toggling visibility
+
+
+                        display.setPixelRange(0,displaySize/2, playerOne.playerColor);
+                        display.setPixelRange(displaySize/2 ,displaySize-1, playerTwo.playerColor);
+                    } else {
+                        display.clear(); // Assuming there's a method to clear a range of pixels
+                    }
+            
+                    if (frameCount % 60 == 0) {
+                        // Update the countdown every second
+                        budget_countdown -= 1;
+                        console.log("pricing_countdown=", budget_countdown);
+                    }
+
+                } else {
+                    this.gameState = "PRICING";
+                }
+            break;
+
 
             case "PRICING":
                 display.clear();
 
-                // show the currentbid
-                // blink three times
                 console.log("PRICING STATE");
+                // Calculate the endpoint of the pixels to set based on the current bid
+                // Calculate the sum of all item values
+                let totalSum = itemValues.reduce((acc, curr) => acc + curr, 0);
 
-                // switch to the "PLAY" state
-                display.setPixel(1, color(128,128,128));
-
-                // You could implement a blinking effect by toggling the visibility of the bid
-                // or by changing its color intermittently. Here's a conceptual way to blink three times:
-
-
-                if (frameCount % 60 == 0 && pricing_countdown > 0) {
-                    // Update and display the countdown every second
-                    pricing_countdown -= 1; // Decrements the countdown by 1 every second
-                }
-
-                console.log("pricing_countdown=", pricing_countdown);
-
-                if (pricing_countdown == 0){
+                // Calculate the endPixel position for the current round's item value
+                // Adjusted to fit within half of the display size
+                let endPixel = parseInt((itemValues[round - 1] / totalSum) * (displaySize / 2));
+            
+                // Only update and blink when pricing_countdown is greater than 0
+                if (pricing_countdown > 0) {
+                    // Show the current bid by lighting up pixels from 0 to endPixel
+                    if (frameCount % 60 < 30) { // This creates a blinking effect by toggling visibility
+                        display.setPixelRange(0, endPixel, color(128, 128, 128));
+                    } else {
+                        display.clear(); // Assuming there's a method to clear a range of pixels
+                    }
+            
+                    if (frameCount % 60 == 0) {
+                        // Update the countdown every second
+                        pricing_countdown -= 1;
+                        console.log("pricing_countdown=", pricing_countdown);
+                    }
+                } else {
+                    // When countdown reaches 0, ensure the final state is shown before switching
+                    display.setPixelRange(0, endPixel, color(128, 128, 128));
+                    // Transition to "PLAY" state
+                    pricing_countdown = 5
                     this.gameState = "PLAY";
-                }; // transitionDelay is the delay in milliseconds before switching states.
-            break
+                }
+                break;
 
 
             // This is the main game state, where the playing actually happens
@@ -58,14 +105,33 @@ class Controller {
                 display.clear();
                 console.log("PLAY STATE");
                 // Show all players in the right place, by adding them to display buffer
-                [playerOne, playerTwo].forEach(player => {
 
-                    display.setPixel(player.position, player.playerColor);
-                });
+                display.setPixelRange(0,playerOne.position, playerOne.playerColor);
+                display.setPixelRange(playerTwo.position,displaySize-1, playerTwo.playerColor);
+
             
-                if (gameStarted == 1 && frameCount % 60 == 0 && countdown > 0) {
-                    // Update and display the countdown every second
-                    countdown -= 1; // Decrements the countdown by 1 every second
+                // Update and display the countdown every second.
+                if (gameStarted === 1 && frameCount % 60 === 0 && countdown > 0) {
+                    countdown -= 1; // Decrement the countdown by 1 every second.
+                }
+
+                // Logic for when countdown is greater than or equal to 3.
+                if (countdown >= 3) {
+                    // Always show players without blinking.
+                    display.setPixelRange(0, playerOne.position, playerOne.playerColor);
+                    display.setPixelRange(playerTwo.position, displaySize - 1, playerTwo.playerColor);
+                }
+
+                // Logic for when countdown is less than 3 but greater than 0 for blinking effect.
+                if (countdown < 3 && countdown > 0) {
+                    // Blinking effect: Show players on for the first half of each second, then off.
+                    if (frameCount % 60 < 30) { // On phase of the blink.
+                        display.setPixelRange(0, playerOne.position, playerOne.playerColor);
+                        display.setPixelRange(playerTwo.position, displaySize - 1, playerTwo.playerColor);
+                    } else {
+                        display.clear()
+                    }
+                    // The off phase is implicitly handled by clearing the display at the start of each frame.
                 }
             
                 if (countdown == 0) {
@@ -87,9 +153,10 @@ class Controller {
                         // display.setAllPixels(roundColors[round-1]);
             
                         // Redraw players in their new positions
-                        [playerOne, playerTwo].forEach(player => {
-                            display.setPixel(player.position, player.playerColor);
-                        });
+
+                        display.setPixelRange(0,playerOne.position, playerOne.playerColor);
+                        display.setPixelRange(playerTwo.position,displaySize-1, playerTwo.playerColor);
+                        
 
                         this.gameState = "PRICING";
 
@@ -126,21 +193,21 @@ class Controller {
 }
 
 
-
-
 // This function gets called when a key on the keyboard is pressed
 function keyPressed() {
+    budgetStarted = 1;
 
-    gameStarted = 1;
 
     // And so on...
     if (key == 'D' || key == 'd') {
+        gameStarted = 1;
         playerOne.move(1);
         playerOne.changeBid(+10)
 
     }
 
     if (key == 'J' || key == 'j') {
+        gameStarted = 1;
         playerTwo.move(-1);
         playerTwo.changeBid(+10)
     }
@@ -149,7 +216,7 @@ function keyPressed() {
     // When you press the letter R, the game resets back to the play state
     if (key == 'R' || key == 'r') {
         // Reset game state
-        controller.gameState = "PRICING";
+        controller.gameState = "WAITING";
         countdown = 5; // Reset countdown to 5 seconds
         round = 1; // Reset to the first round
         gameStarted = 0; // Reset game started flag

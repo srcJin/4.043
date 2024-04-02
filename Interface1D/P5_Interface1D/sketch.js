@@ -21,12 +21,14 @@ let collisionAnimation;   // Where we store and manage the collision animation
 
 let score;        // Where we keep track of score and winner
 
+let budgetStarted; // a function to indicate whether the game started, will become 1 when keyPressed
 let gameStarted; // a function to indicate whether the game started, will become 1 when keyPressed
+
 
 let countdown; // a 3s countdown to trigger auction, will reset after player movement
 
 // adding necessary variables
-let itemValues = [50,270,150]
+let itemValues = [50,150,100]
 let round = 1
 
 let budget = 300
@@ -49,6 +51,7 @@ function setup() {
 
   controller = new Controller();            // Initializing controller
 
+  budgetStarted = 0;
   gameStarted = 0;
 
   countdown = 5
